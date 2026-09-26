@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Support - Tully</title>
+<style>
+  :root {
+    --accent: #36709E;
+    --ink: #1C1C1E;
+    --ink-soft: #48484A;
+    --hairline: #E2E2E4;
+    --bg: #FBFBFA;
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--ink);
+    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    line-height: 1.6;
+  }
+
+  header {
+    border-bottom: 1px solid var(--hairline);
+    padding: 28px 24px;
+  }
+
+  header .wrap {
+    max-width: 680px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .mark {
+    width: 22px;
+    height: 22px;
+    border-radius: 6px;
+    background: var(--accent);
+    flex-shrink: 0;
+  }
+
+  .app-name {
+    font-size: 15px;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+  }
+
+  main {
+    max-width: 680px;
+    margin: 0 auto;
+    padding: 48px 24px 96px;
+  }
+
+  h1 {
+    font-size: 30px;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    margin: 0 0 6px;
+  }
+
+  .lede {
+    font-size: 17px;
+    color: var(--ink-soft);
+    margin: 0 0 40px;
+  }
+
+  h2 {
+    font-size: 19px;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    margin: 40px 0 12px;
+    padding-top: 24px;
+    border-top: 1px solid var(--hairline);
+  }
+
+  h2:first-of-type {
+    border-top: none;
+    padding-top: 0;
+  }
+
+  p {
+    font-size: 16px;
+    margin: 0 0 14px;
+  }
+
+  ul {
+    margin: 0 0 14px;
+    padding-left: 22px;
+  }
+
+  li {
+    font-size: 16px;
+    margin-bottom: 6px;
+  }
+
+  strong { font-weight: 600; }
+
+  a {
+    color: var(--accent);
+    text-decoration: none;
+  }
+
+  a:hover, a:focus-visible {
+    text-decoration: underline;
+  }
+
+  .contact-box {
+    margin-top: 8px;
+    padding: 20px 20px;
+    background: #fff;
+    border: 1px solid var(--hairline);
+    border-radius: 12px;
+  }
+
+  .contact-box p {
+    margin: 0 0 4px;
+    font-size: 15px;
+  }
+
+  .contact-box .email {
+    font-size: 17px;
+    font-weight: 600;
+  }
+
+  .contact-box .sub {
+    color: var(--ink-soft);
+    font-size: 13px;
+    margin-top: 6px;
+  }
+
+  footer {
+    max-width: 680px;
+    margin: 0 auto;
+    padding: 0 24px 48px;
+    color: var(--ink-soft);
+    font-size: 13px;
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    main { animation: fade-in 0.3s ease-out; }
+  }
+
+  @keyframes fade-in {
+    from { opacity: 0; transform: translateY(4px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap">
+    <div class="mark" aria-hidden="true"></div>
+    <span class="app-name">Tully</span>
+  </div>
+</header>
+
+<main>
+  <h1>Support</h1>
+  <p class="lede">Get help with Tully, report a problem, or send feedback.</p>
+
+  <h2>Contact</h2>
+  <div class="contact-box">
+    <p class="email"><a href="mailto:tullytimeblocking@gmail.com">tullytimeblocking@gmail.com</a></p>
+    <p class="sub">I read every message and reply personally, usually within a few days.</p>
+  </div>
+
+  <h2>What to include</h2>
+  <p>Tully is built and maintained by one person, so a few details up front make it much faster to help:</p>
+  <ul>
+    <li>What you were trying to do, and what happened instead</li>
+    <li>Your iPhone model and iOS version (Settings → General → About)</li>
+    <li>Whether you're syncing with iCloud across multiple devices</li>
+    <li>A screenshot, if it's a visual issue</li>
+  </ul>
+
+  <h2>Common questions</h2>
+
+  <p><strong>Does Tully work offline?</strong><br>
+  Yes. Tully works fully without an internet connection. iCloud sync between your devices requires connectivity, but all core features work locally.</p>
+
+  <p><strong>Where is my data stored?</strong><br>
+  On your device, and in your own private iCloud account if you have sync turned on. See the <a href="privacy.html">Privacy Policy</a> for details.</p>
+
+  <p><strong>How do I restore a purchase on a new device?</strong><br>
+  Open Tully's settings > Tully Pro > Restore Purchases. This uses your Apple ID and doesn't require creating an account.</p>
+
+  <p><strong>I found a bug - what's the fastest way to get it fixed?</strong><br>
+  Email the address above with the details listed under "What to include." Bug reports with clear reproduction steps get fixed fastest.</p>
+
+  <h2>Feature requests</h2>
+  <p>Tully is actively developed. If there's something you'd like to see, please send me an email - I'd be very happy to receive genuine, specific suggestions from real users.</p>
+</main>
+
+<footer>
+  Tully - Support
+</footer>
+
+</body>
+</html>
