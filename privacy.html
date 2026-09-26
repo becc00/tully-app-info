@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Privacy Policy — Tully</title>
+<style>
+  :root {
+    --accent: #36709E;
+    --ink: #1C1C1E;
+    --ink-soft: #48484A;
+    --hairline: #E2E2E4;
+    --bg: #FBFBFA;
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--ink);
+    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    line-height: 1.6;
+  }
+
+  header {
+    border-bottom: 1px solid var(--hairline);
+    padding: 28px 24px;
+  }
+
+  header .wrap {
+    max-width: 680px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .mark {
+    width: 22px;
+    height: 22px;
+    border-radius: 6px;
+    background: var(--accent);
+    flex-shrink: 0;
+  }
+
+  .app-name {
+    font-size: 15px;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+  }
+
+  main {
+    max-width: 680px;
+    margin: 0 auto;
+    padding: 48px 24px 96px;
+  }
+
+  h1 {
+    font-size: 30px;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    margin: 0 0 6px;
+  }
+
+  .effective-date {
+    color: var(--ink-soft);
+    font-size: 14px;
+    margin: 0 0 40px;
+  }
+
+  .lede {
+    font-size: 17px;
+    color: var(--ink-soft);
+    margin: 0 0 40px;
+  }
+
+  h2 {
+    font-size: 19px;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    margin: 40px 0 12px;
+    padding-top: 24px;
+    border-top: 1px solid var(--hairline);
+  }
+
+  h2:first-of-type {
+    border-top: none;
+    padding-top: 0;
+  }
+
+  p {
+    font-size: 16px;
+    margin: 0 0 14px;
+  }
+
+  ul {
+    margin: 0 0 14px;
+    padding-left: 22px;
+  }
+
+  li {
+    font-size: 16px;
+    margin-bottom: 6px;
+  }
+
+  strong { font-weight: 600; }
+
+  a {
+    color: var(--accent);
+    text-decoration: none;
+  }
+
+  a:hover, a:focus-visible {
+    text-decoration: underline;
+  }
+
+  .contact-box {
+    margin-top: 8px;
+    padding: 18px 20px;
+    background: #fff;
+    border: 1px solid var(--hairline);
+    border-radius: 12px;
+  }
+
+  .contact-box p {
+    margin: 0;
+    font-size: 15px;
+  }
+
+  footer {
+    max-width: 680px;
+    margin: 0 auto;
+    padding: 0 24px 48px;
+    color: var(--ink-soft);
+    font-size: 13px;
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    main { animation: fade-in 0.3s ease-out; }
+  }
+
+  @keyframes fade-in {
+    from { opacity: 0; transform: translateY(4px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap">
+    <div class="mark" aria-hidden="true"></div>
+    <span class="app-name">Tully</span>
+  </div>
+</header>
+
+<main>
+  <h1>Privacy Policy</h1>
+  <p class="effective-date">Effective date: 26 September 2026</p>
+
+  <p class="lede">Tully is a personal time-blocking app. This policy explains what data Tully handles and - more importantly - what it doesn't.</p>
+
+  <h2>The short version</h2>
+  <p>Tully does not collect your data. Everything you create in Tully lives on your device and, if you use iCloud, in your personal iCloud account. There are no servers, no analytics, no advertising, and no access to anything you do in the app.</p>
+
+  <h2>Calendar and Reminders access</h2>
+  <p>Tully asks for full access to your Apple Calendar and Apple Reminders because its core purpose is to organise your existing reminders into time blocks scheduled around your calendar events. With this access, Tully:</p>
+  <ul>
+    <li>reads your calendar events to schedule time blocks around them, and adds or updates events if you choose to do this in Tully;</li>
+    <li>reads your reminders to show the relevant ones during each time block, and creates, edits, and completes reminders when you do so in the app.</li>
+  </ul>
+  <p>All of this happens on your device through Apple's EventKit framework. Your calendar and reminder content is never transmitted off your device to me or to any third party. Tully currently does not read or modify reminder alarms.</p>
+
+  <h2>Data Tully stores</h2>
+  <p>Tully keeps its own data - such as time blocks, templates, tags, deadlines, session history, and settings - in a local database on your device. This data never leaves your device except through iCloud sync (below) or an export you initiate yourself.</p>
+
+  <h2>iCloud sync</h2>
+  <p>If you're signed into iCloud, Tully syncs its data between your devices using your <strong>private iCloud (CloudKit) container</strong>. This container belongs to your Apple ID: Apple hosts it, only your devices can read it, and I cannot access, view, or retrieve anything in it. Turning off iCloud for Tully in your device settings stops sync; Tully continues to work locally.</p>
+
+  <h2>Purchases</h2>
+  <p>Payment for Tully Pro is processed entirely by Apple through the App Store. I never see or store your payment details. Apple provides me only with anonymous transaction records (for example, that Tully Pro was purchased), never your identity.</p>
+
+  <h2>Diagnostics</h2>
+  <p>If you have opted in to sharing analytics with app developers in your device's Privacy settings, Apple may send me anonymised crash reports and performance metrics. These contain technical information about the crash, not your content, and are used solely to fix bugs. If you haven't opted in, nothing is received.</p>
+
+  <h2>What Tully does not do</h2>
+  <ul>
+    <li>No analytics or tracking SDKs</li>
+    <li>No advertising</li>
+    <li>No accounts - there is nothing to sign up for</li>
+    <li>No selling, sharing, or transferring of data to anyone</li>
+    <li>No data collection as defined by Apple's privacy guidelines: Tully's App Store privacy label is "Data Not Collected"</li>
+  </ul>
+
+  <h2>Retention and deletion</h2>
+  <p>Your data stays as long as you keep it. To remove it: delete anything within the app, or delete the app itself to remove all local data. To remove synced data from iCloud, delete the app's iCloud data via Settings → [your name] → iCloud → Manage Account Storage, or turn off iCloud for Tully. Reminders and calendar events belong to Apple's apps and remain in Reminders and Calendar unless you delete them.</p>
+
+  <h2>Children</h2>
+  <p>Tully is a productivity tool and is not directed at children.</p>
+
+  <h2>Changes</h2>
+  <p>If Tully's data practices ever change, this policy will be updated and the effective date revised. Material changes will be noted in the app's release notes.</p>
+
+  <h2>Contact</h2>
+  <div class="contact-box">
+    <p>Questions about this policy or your data: <a href="mailto:tullytimeblocking@gmail.com">tullytimeblocking@gmail.com</a></p>
+    <p style="margin-top: 8px;">For help using the app, see <a href="support.html">Support</a>.</p>
+  </div>
+</main>
+
+<footer>
+  Tully — Privacy Policy
+</footer>
+
+</body>
+</html>
