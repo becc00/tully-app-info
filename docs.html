@@ -1,0 +1,615 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Tully documentation</title>
+<meta name="description" content="How Tully, a time blocking app built on Apple Reminders and Calendar, works.">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🗓️</text></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@500;600;700&family=Literata:ital,opsz,wght@0,7..72,400;0,7..72,600;1,7..72,400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #f3f5f8;
+    --surface: #ffffff;
+    --ink: #1b2230;
+    --muted: #596273;
+    --rule: #dce1e8;
+    --accent: #2d6a8a;
+    --c-intro: #7a8594;
+    --c-time: #2d6a8a;
+    --c-today: #4f8fbf;
+    --c-todo: #5f9a6f;
+    --c-review: #857bc0;
+    --c-history: #d98a33;
+    --c-settings: #6f7a8a;
+    --c-widgets: #c46a72;
+    --c-reminders: #3f9a91;
+    --c-roadmap: #a0864f;
+    --sans: "Instrument Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+    --serif: "Literata", Georgia, "Times New Roman", serif;
+    box-sizing: border-box;
+    padding-top: env(safe-area-inset-top, 0px);
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #141820;
+      --surface: #1b212b;
+      --ink: #e5e8ed;
+      --muted: #9aa3b2;
+      --rule: #2b323e;
+      --accent: #82b8d8;
+      --c-intro: #98a2b1;
+      --c-time: #82b8d8;
+      --c-today: #6ea9d6;
+      --c-todo: #7fbb8e;
+      --c-review: #a59ce0;
+      --c-history: #eba55a;
+      --c-settings: #98a2b1;
+      --c-widgets: #df8a91;
+      --c-reminders: #62bdb3;
+      --c-roadmap: #c4a86e;
+    }
+  }
+  *, *::before, *::after { box-sizing: inherit; }
+  html { scroll-behavior: smooth; scroll-padding-top: calc(env(safe-area-inset-top, 0px) + 1.5rem); }
+  @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--ink);
+    font-family: var(--serif);
+    font-size: 1.0625rem;
+    line-height: 1.7;
+    -webkit-text-size-adjust: 100%;
+  }
+  a { color: var(--accent); text-underline-offset: 0.18em; text-decoration-thickness: 1px; }
+  a:hover { text-decoration-thickness: 2px; }
+  :focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 3px; }
+
+  .layout {
+    display: grid;
+    grid-template-columns: 17rem minmax(0, 1fr);
+    gap: 4rem;
+    max-width: 72rem;
+    margin: 0 auto;
+    padding: 0 2rem;
+  }
+
+  /* The contents rail is drawn like a day timeline: each section is a block on the line. */
+  .rail {
+    position: sticky;
+    top: env(safe-area-inset-top, 0px);
+    align-self: start;
+    max-height: 100vh;
+    overflow-y: auto;
+    padding: 3rem 0 3rem;
+    font-family: var(--sans);
+  }
+  .rail summary {
+    font-weight: 600;
+    font-size: 0.95rem;
+    color: var(--muted);
+    cursor: pointer;
+    list-style: none;
+    margin-bottom: 1.25rem;
+  }
+  .rail summary::-webkit-details-marker { display: none; }
+  .rail ol { list-style: none; margin: 0; padding: 0; }
+  .rail > details > ol { border-left: 1px solid var(--rule); margin-left: 0.3rem; }
+  .rail li.sec { position: relative; padding-left: 1.1rem; margin-bottom: 0.35rem; }
+  .rail li.sec > a {
+    display: block;
+    color: var(--ink);
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 0.95rem;
+    line-height: 1.35;
+    padding: 0.35rem 0;
+  }
+  .rail li.sec::before {
+    content: "";
+    position: absolute;
+    left: -0.2rem;
+    top: 0.45rem;
+    width: 0.4rem;
+    height: 1.05rem;
+    border-radius: 0.2rem;
+    background: var(--c);
+    opacity: 0.35;
+    transition: opacity 0.2s, height 0.2s;
+  }
+  .rail li.sec.active::before { opacity: 1; height: calc(100% - 0.8rem); }
+  .rail li.sec ol { padding-bottom: 0.4rem; }
+  .rail li.sec li a {
+    display: block;
+    color: var(--muted);
+    text-decoration: none;
+    font-size: 0.85rem;
+    line-height: 1.35;
+    padding: 0.2rem 0;
+  }
+  .rail li.sec li a:hover, .rail li.sec > a:hover { color: var(--accent); }
+  .rail li.sec li a.active { color: var(--ink); }
+
+  main { padding: 4rem 0 5rem; max-width: 42rem; }
+
+  header.intro { margin-bottom: 3.5rem; }
+  header.intro h1 {
+    font-family: var(--sans);
+    font-weight: 700;
+    font-size: clamp(3rem, 8vw, 4.75rem);
+    line-height: 1;
+    letter-spacing: -0.03em;
+    margin: 0 0 0.6rem;
+  }
+  header.intro p {
+    font-family: var(--sans);
+    font-size: 1.2rem;
+    color: var(--muted);
+    margin: 0;
+  }
+
+  section { margin-bottom: 3.5rem; }
+  h2, h3, h4 { font-family: var(--sans); line-height: 1.25; color: var(--ink); }
+  h2 {
+    font-size: 1.85rem;
+    font-weight: 700;
+    letter-spacing: -0.015em;
+    margin: 0 0 1.1rem;
+    padding-top: 1.75rem;
+    border-top: 1px solid var(--rule);
+    position: relative;
+  }
+  h2::before {
+    content: "";
+    position: absolute;
+    top: -1px;
+    left: 0;
+    width: 3.5rem;
+    height: 4px;
+    border-radius: 0 0 2px 2px;
+    background: var(--c);
+  }
+  h3 { font-size: 1.3rem; font-weight: 600; margin: 2.25rem 0 0.6rem; }
+  h4 { font-size: 1.05rem; font-weight: 600; margin: 1.75rem 0 0.4rem; }
+  p { margin: 0 0 1rem; }
+  ul { margin: 0 0 1rem; padding-left: 1.3rem; }
+  li { margin-bottom: 0.3rem; }
+  li::marker { color: var(--c, var(--muted)); }
+  strong { font-weight: 600; }
+
+  .aside-line {
+    font-style: italic;
+    font-size: 1.2rem;
+    margin: 1.25rem 0;
+    padding-left: 1rem;
+    border-left: 3px solid var(--c);
+  }
+  .rule {
+    background: var(--surface);
+    border: 1px solid var(--rule);
+    border-radius: 6px;
+    padding: 0.8rem 1rem;
+    margin: 1rem 0;
+    font-family: var(--sans);
+    font-weight: 600;
+  }
+  .settings-list { list-style: none; padding: 0; }
+  .settings-list li {
+    padding: 0.7rem 0;
+    border-bottom: 1px solid var(--rule);
+    margin: 0;
+  }
+  .settings-list li:last-child { border-bottom: 0; }
+  .settings-list strong { font-family: var(--sans); display: block; }
+
+  footer {
+    border-top: 1px solid var(--rule);
+    padding-top: 1.5rem;
+    font-family: var(--sans);
+    font-size: 0.875rem;
+    color: var(--muted);
+  }
+
+  [data-c="intro"] { --c: var(--c-intro); }
+  [data-c="time"] { --c: var(--c-time); }
+  [data-c="today"] { --c: var(--c-today); }
+  [data-c="todo"] { --c: var(--c-todo); }
+  [data-c="review"] { --c: var(--c-review); }
+  [data-c="history"] { --c: var(--c-history); }
+  [data-c="settings"] { --c: var(--c-settings); }
+  [data-c="widgets"] { --c: var(--c-widgets); }
+  [data-c="reminders"] { --c: var(--c-reminders); }
+  [data-c="roadmap"] { --c: var(--c-roadmap); }
+
+  @media (max-width: 860px) {
+    .layout { display: block; padding: 0 1.25rem; }
+    .rail {
+      position: static;
+      max-height: none;
+      overflow: visible;
+      padding: 1.5rem 0 0;
+    }
+    .rail details {
+      background: var(--surface);
+      border: 1px solid var(--rule);
+      border-radius: 8px;
+      padding: 0.8rem 1rem;
+    }
+    .rail summary { margin: 0; color: var(--ink); }
+    .rail summary::after { content: " +"; color: var(--muted); }
+    .rail details[open] summary::after { content: " –"; }
+    .rail details[open] summary { margin-bottom: 1rem; }
+    main { padding-top: 2.5rem; }
+    header.intro { margin-bottom: 2.5rem; }
+    h2 { font-size: 1.55rem; }
+  }
+</style>
+</head>
+<body>
+<div class="layout">
+
+<nav class="rail" aria-label="Contents">
+  <details id="toc">
+    <summary>Contents</summary>
+    <ol>
+      <li class="sec" data-c="intro"><a href="#why">Why I built Tully</a></li>
+      <li class="sec" data-c="time"><a href="#how-time-works">How Tully works with time</a></li>
+      <li class="sec" data-c="today"><a href="#today">Today tab</a>
+        <ol>
+          <li><a href="#calendars-events">Calendars and events</a></li>
+          <li><a href="#time-blocks">Time blocks</a></li>
+          <li><a href="#focusing">Focusing on a block</a></li>
+          <li><a href="#matching-tasks">Seeing only the tasks that matter now</a></li>
+          <li><a href="#day-overview">Day Overview</a></li>
+        </ol>
+      </li>
+      <li class="sec" data-c="todo"><a href="#todo">To Do tab</a>
+        <ol>
+          <li><a href="#start-dates">Start dates and deadlines</a></li>
+          <li><a href="#snooze">Snooze</a></li>
+          <li><a href="#someday">Someday / Maybe</a></li>
+          <li><a href="#projects">Projects</a></li>
+          <li><a href="#quick-edit">Quickly editing reminders</a></li>
+          <li><a href="#repeat-after-completion">Repeat after completion</a></li>
+          <li><a href="#log-completion">Logging a past completion time</a></li>
+          <li><a href="#list-colours">Custom list colours</a></li>
+        </ol>
+      </li>
+      <li class="sec" data-c="review"><a href="#review">Review tab</a></li>
+      <li class="sec" data-c="history"><a href="#history">History tab</a></li>
+      <li class="sec" data-c="settings"><a href="#settings">Settings tab</a>
+        <ol>
+          <li><a href="#settings-integrations">Integrations</a></li>
+          <li><a href="#settings-schedule">Schedule &amp; Timeblocks</a></li>
+          <li><a href="#settings-templates">Templates &amp; Organization</a></li>
+          <li><a href="#settings-notifications">Notifications</a></li>
+          <li><a href="#settings-data">Data &amp; Sync</a></li>
+        </ol>
+      </li>
+      <li class="sec" data-c="widgets"><a href="#widgets">Widgets</a></li>
+      <li class="sec" data-c="reminders"><a href="#apple-reminders">A few things to know about Apple Reminders</a>
+        <ol>
+          <li><a href="#limit-tags">Tags</a></li>
+          <li><a href="#limit-urls">URLs</a></li>
+          <li><a href="#limit-locations">Locations</a></li>
+        </ol>
+      </li>
+      <li class="sec" data-c="roadmap"><a href="#roadmap">What I’m still working on</a></li>
+    </ol>
+  </details>
+</nav>
+
+<main>
+<header class="intro">
+  <h1>Tully</h1>
+  <p>Documentation</p>
+</header>
+
+<section id="why" data-c="intro">
+  <h2>Why I built Tully</h2>
+  <p>I built Tully because I was struggling to juggle too many things and never seemed to have enough time for everything I wanted or needed to do. Every time I looked at my long and ever-expanding task list I felt completely overwhelmed and didn’t know where to start. And even when I knew what I had to get done, I had trouble figuring out how to fit it all into my day.</p>
+  <p>Like a lot of people in that situation, I’d tried many different apps. I liked using Apple Reminders and Calendar because they’re native and really well integrated into the Apple ecosystem. But I always found that while Reminders makes it really easy to add more and more tasks, it was less helpful when it came to organising them or deciding what to do when.</p>
+  <p>I’d also tried time blocking in my calendar, but I really disliked mixing actual commitments, like meetings and appointments, with things I was merely planning or hoping to do. And because I was terrible at estimating how long things would take, those plans rarely survived contact with reality.</p>
+  <p>What I really wanted was a way to decide at a higher level how much time I wanted to spend on different parts of my life.</p>
+  <p>Instead of looking at a list of 50 cleaning tasks and feeling guilty for never getting to them (I hate cleaning), I wanted to be able to say:</p>
+  <p class="aside-line">I’ll spend an hour on cleaning.</p>
+  <p>And then not see or think about the cleaning list until it was actually time to work on it.</p>
+  <p>These are basically the things that drove me to build Tully.</p>
+</section>
+
+<section id="how-time-works" data-c="time">
+  <h2>How Tully works with time</h2>
+  <p>Tully lets you create time blocks for your day. A block can be <strong>pinned</strong>, meaning it happens at a particular time, or <strong>floating</strong>, meaning it can move later if other things take longer or something changes.</p>
+  <p>Floating blocks can also have a <strong>Not Before</strong> time. This means the block won’t start before that time, and any later floating blocks will move with it.</p>
+  <p>One thing I deliberately did <em>not</em> want was an AI scheduler or an app that decides what you should do next.</p>
+  <p>Tully doesn’t rearrange the order of your blocks or try to optimise your day for you. You create the plan. You can make that process faster by creating templates for individual blocks, or even whole days, but the basic idea remains the same: you decide how you want to spend your time.</p>
+  <p>Tully then does the mechanical bit.</p>
+  <p>It lays your blocks out around your Calendar events and keeps adjusting their timing as the day changes. If something takes longer than expected, or another calendar event appears, later floating blocks move back.</p>
+  <p id="overflow">If everything you planned no longer fits into the day, the blocks at the bottom move into <strong>Overflow</strong>. This makes an unrealistic day very obvious. Instead of quietly pretending I can do 14 hours of things in eight hours, I can see that something has to give and decide consciously what to remove.</p>
+</section>
+
+<section id="today" data-c="today">
+  <h2>Today tab</h2>
+  <p>The Today tab is for your daily plan. You can view the day either as a <strong>Timeline</strong> or as a <strong>List</strong> (tap the three dots at the top right). You can also tap the calendar icon to jump to any date, swipe between days, or pick a date from the date bar.</p>
+
+  <h3 id="calendars-events">Calendars and events</h3>
+  <p>You can hide entire calendars or individual events if you don’t want them taking up space in your day or affecting where your time blocks fit. Hidden events won’t block out time in Tully, but they remain unchanged in Apple Calendar. (You choose which calendars appear under <a href="#settings-integrations">Settings › Integrations</a>.)</p>
+  <p>All-day calendar events aren’t shown in Tully, since they generally don’t represent a specific period of time that needs to be blocked out. In future I may add them to the <a href="#day-overview">Day Overview</a> as alerts.</p>
+
+  <h3 id="time-blocks">Time blocks</h3>
+  <p>You can create blocks directly or from saved block templates.</p>
+  <p>Blocks can be:</p>
+  <ul>
+    <li><a href="#how-time-works">pinned</a> to a particular time</li>
+    <li><a href="#how-time-works">floating</a></li>
+    <li>given a <a href="#how-time-works">Not Before</a> time</li>
+    <li><a href="#matching-tasks">linked to reminders</a></li>
+    <li>assigned to a <a href="#settings-templates">category</a></li>
+    <li>created from <a href="#timeblock-templates">templates</a></li>
+  </ul>
+
+  <h4 id="title-suggestions">Title suggestions</h4>
+  <p>When you start typing the title of a new time block, Tully suggests matching titles from your templates and previous blocks, so you can quickly reuse a block without re-creating it from scratch.</p>
+
+  <h4 id="timeblock-templates">Why use Timeblock Templates?</h4>
+  <p>With <a href="#title-suggestions">title suggestions</a>, you don’t necessarily need to create templates for every type of block you want to re-use. They’re still useful for certain types of blocks though. Templates appear at the top of the suggestions, and you can save additional information such as notes that will be copied into each new block. If you create a block from a previous block instead, its notes won’t be copied. (Templates are created and edited in <a href="#settings-templates">Settings › Templates &amp; Organization</a>.)</p>
+
+  <h4 id="notes-checklists">Timeblock notes &amp; checklists</h4>
+  <p>Timeblocks can have notes, including Markdown checkboxes. There’s a button just above the keyboard to insert a checkbox, and you can tick items off directly from the expanded time block sheet without having to open the notes editor.</p>
+
+  <h4 id="day-templates">Day Templates</h4>
+  <p>You can also create Day Templates if you often use the same broad structure (e.g. work-at-home days versus office days, or Mondays versus Tuesdays).</p>
+  <p>The point of templates is not to create a rigid recurring schedule. They’re simply a quick starting point for today’s plan.</p>
+  <p>When you apply a Day Template, you can choose to add its blocks to your existing plan or replace the timeblocks already there. Either way, your calendar events are left untouched.</p>
+
+  <h3 id="focusing">Focusing on a block</h3>
+  <p>When you start Focus on a block, Tully keeps that block active until <em>you</em> decide you’re finished.</p>
+  <p>It doesn’t simply stop when the estimated duration expires.</p>
+  <p>If something takes longer than you expected, the block can continue into overtime and the floating blocks after it will move later. (You can ask to be <a href="#settings-notifications">notified</a> when you reach the end of your planned time, and at regular intervals while you’re in overtime.)</p>
+  <p>If you’re interrupted, or you decide you want to come back to the work later, long-press the block to choose <strong>Continue Later</strong> rather than Complete, which tells Tully to create another block.</p>
+  <p>If you stopped before the planned end of the original block, the new block uses the remaining planned time. If you had already gone past the planned end, it uses a default duration instead (set in <a href="#settings-schedule">Settings</a>).</p>
+  <p>You can change the duration of a block at any time by long-pressing it and choosing <strong>Duration</strong>. You can also choose <strong>Scheduling</strong> to switch between a floating, pinned or Not Before block, or <strong>Tomorrow</strong> to postpone it.</p>
+
+  <h3 id="matching-tasks">Seeing only the tasks that matter now</h3>
+  <p>The other major idea behind Tully is being able to look at one subset of your tasks at a time.</p>
+  <p>A time block – or a time block template – can be linked to a:</p>
+  <ul>
+    <li>Reminders list</li>
+    <li><a href="#projects">project</a></li>
+    <li><a href="#limit-tags">tag</a></li>
+    <li>specific reminder</li>
+  </ul>
+  <p>When you tap to open the block, Tully only shows available reminders matching those criteria.</p>
+  <p>The current matching rule is deliberately quite simple:</p>
+  <p class="rule">selected list AND selected tag, plus tasks from any selected project.</p>
+  <p>For example, you might have a block called <strong>Phone calls</strong> linked to the tag <em>calls</em>, with no list selected. That block would show available reminders tagged <em>calls</em>, regardless of which list they belong to.</p>
+  <p>I may make this more configurable in future, but I didn’t want version 1 to require people to build complicated AND/OR search rules before they could get anything done.</p>
+  <p>You can also manually add a particular reminder to a block. That reminder will then appear in that block even if it wouldn’t normally match its list, project or tag filters.</p>
+  <p>Or you can create a dedicated block for a reminder, using the reminder’s name as the block name.</p>
+
+  <h3 id="day-overview">Day Overview</h3>
+  <p>On the Today tab, you can swipe up to open the Day Overview drawer. Apart from some summary statistics, it shows you reminders that aren’t linked to any block, which reminders fall in each of your planned blocks, and upcoming <a href="#start-dates">deadlines</a>.</p>
+  <p>You can long-press to edit reminders, or check them off just as you can elsewhere in the app.</p>
+  <p>If you have blocks that don’t fit in your day (<a href="#overflow">Overflow</a>), you can tap the up arrow to push them up to be next in your list of blocks. (Note: in future I plan to make this more configurable.)</p>
+  <p>You can choose which lists and tags appear in the Day Overview in <a href="#settings-schedule">Settings › Schedule &amp; Timeblocks</a>.</p>
+</section>
+
+<section id="todo" data-c="todo">
+  <h2>To Do tab</h2>
+  <p>The To Do tab is Tully’s view of your Apple Reminders, with some additional organisation that Reminders itself doesn’t provide.</p>
+
+  <h3 id="start-dates">Start dates and deadlines</h3>
+  <p>Tully treats the date on an Apple Reminder as a <strong>start date</strong> or <strong>planned date</strong> rather than a deadline. Separately, you can give a reminder a Tully <strong>deadline</strong>.</p>
+  <p>That distinction matters to me. Something can become available to work on Monday but not actually be due until Friday. I don’t want to pretend those are the same thing.</p>
+
+  <h3 id="snooze">Snooze</h3>
+  <p>You can snooze a reminder in Tully. This does <strong>not</strong> change its date in Apple Reminders. It simply hides it from your current view until the snooze period ends.</p>
+  <p>I find this especially useful for recurring reminders. Sometimes a recurring task becomes due but I know I can’t get to it for a few days. Changing its Reminders date can interfere with the recurrence pattern, whereas Snooze lets me temporarily get it out of the way without changing the underlying reminder.</p>
+
+  <h3 id="someday">Someday / Maybe</h3>
+  <p>You can also mark a reminder <strong>Someday / Maybe</strong>. These reminders are removed from your normal working views and won’t appear inside time blocks. The idea is to have somewhere to keep things you might want to do without having them constantly competing for your attention.</p>
+  <p>You can see them any time in the <a href="#review">Review tab</a>.</p>
+
+  <h3 id="projects">Projects</h3>
+  <p>Any reminder can be turned into a Tully <strong>Project</strong>. Other reminders can then be linked to it as child tasks.</p>
+  <p>Projects behave much like other reminders: they can have start dates, deadlines, priority and recurrence. Tully also gives you a dedicated Projects view so you can see them together.</p>
+
+  <h3 id="quick-edit">Quickly editing reminders</h3>
+  <p>Long-press a reminder to quickly change things such as:</p>
+  <ul>
+    <li>list</li>
+    <li>priority</li>
+    <li><a href="#limit-tags">tags</a></li>
+    <li><a href="#start-dates">start date</a></li>
+    <li><a href="#start-dates">deadline</a></li>
+  </ul>
+  <p>You can always open the reminder in Apple Reminders as well.</p>
+
+  <h3 id="repeat-after-completion">Repeat after completion</h3>
+  <p>Tully supports <strong>Repeat After Completion</strong>.</p>
+  <p>Unlike a normal fixed recurrence, the next reminder is only created when you complete the previous one. For example, if something is set to repeat three months after completion, completing it on 15 September creates the next one for 15 December – regardless of when the previous task was originally scheduled.</p>
+  <p>One important limitation: the reminder needs to be marked complete <strong>inside Tully</strong> for Tully to generate the next copy. If it is completed somewhere else, such as directly in Apple Reminders, Tully doesn’t receive enough information to reliably trigger this behaviour.</p>
+
+  <h3 id="log-completion">Logging a past completion time</h3>
+  <p>Normally, completing a reminder simply records the current date and time.</p>
+  <p>But if you want to record when something was <em>actually</em> completed, long-press the reminder and choose <strong>Log Completion</strong>. You can then choose the completion date and time yourself.</p>
+  <p>This is completely optional, but I find it useful for things where I may later need to know exactly when I did it.</p>
+  <p>Tully also shows completion dates and times for completed reminders.</p>
+
+  <h3 id="list-colours">Custom list colours</h3>
+  <p>Tully lets you choose custom colours for your Reminders lists, rather than being limited to Apple’s preset colours. The custom colours also appear in Apple Reminders, so your lists look the same in both apps.</p>
+</section>
+
+<section id="review" data-c="review">
+  <h2>Review tab</h2>
+  <p>The Review tab is where things live that probably shouldn’t be demanding your attention every day but still need to be looked at occasionally.</p>
+  <p>This includes:</p>
+  <ul>
+    <li>Inbox tasks (you can optionally select any Reminders list to be your inbox, where you capture things before deciding what to do with them – see <a href="#settings-integrations">Integrations</a>)</li>
+    <li><a href="#someday">Someday / Maybe</a> reminders</li>
+    <li>Untagged reminders</li>
+  </ul>
+  <p>It also shows you – in the Timeblocks section – which reminders match each of your saved <a href="#timeblock-templates">templates</a> and which match no template. This can give you a rough idea of which timeblocks you might need to schedule more often!</p>
+  <p>Review is one of the areas I most want to develop further.</p>
+  <p>I’d like Tully eventually to support a much better review process, including a short <strong>daily planning</strong> process and a more structured <strong>weekly review</strong>.</p>
+  <p>The goal isn’t to add more productivity process for the sake of it. It’s to create a useful way to look at what is actually on your plate before automatically filling the day or week with the same things you always do.</p>
+</section>
+
+<section id="history" data-c="history">
+  <h2>History tab</h2>
+  <p>Tully keeps a history of your completed <a href="#focusing">focus sessions</a>.</p>
+  <p>If you assign time blocks to <a href="#categories"><strong>categories</strong></a>, you can see how much time you have actually spent on those categories over days, weeks and months.</p>
+  <p>There is also a heat-map view showing when you have spent time on them.</p>
+  <p>I’ve found this surprisingly useful for planning. For example, I used to routinely give myself half an hour to cook dinner. Looking at my actual history made it very obvious that dinner usually takes me more than an hour.</p>
+  <p>That kind of information is useful because better planning isn’t necessarily about squeezing more into a day. Sometimes it just means becoming more realistic about how long your life actually takes.</p>
+  <p>If you’re a data nerd, Tully lets you do detailed time tracking. It’s completely up to you how you set up your categories and timeblocks to record what matters to you. For example, maybe you don’t care about knowing how long it takes you to ‘Cook dinner’, only how long you spend on home chores generally.</p>
+  <p>If you don’t care about history or time tracking, all this is optional. If all you ever do is plan a few key blocks, do the tasks in each block and move on, that’s entirely your prerogative. Sometimes time tracking is a trap anyway.</p>
+</section>
+
+<section id="settings" data-c="settings">
+  <h2>Settings tab</h2>
+  <p>Settings is where you can configure how you want Tully to work and create and manage the reusable parts.</p>
+
+  <h3 id="settings-integrations">Integrations</h3>
+  <p>Choose which calendars and Reminders lists to display in Tully. You can also (optionally) select a list to use as your Inbox, which then appears in the <a href="#review">Review tab</a>.</p>
+
+  <h3 id="settings-schedule">Schedule &amp; Timeblocks</h3>
+  <ul class="settings-list">
+    <li><strong>Start and end of day</strong>the hours between which you want Tully to schedule your blocks. Floating blocks will never start before the ‘start’ time (unless you pin them earlier), and anything that won’t fit before the ‘end’ time will move into the <a href="#overflow">Overflow</a> section.</li>
+    <li><strong>Buffer between blocks</strong>how much time you want Tully to add between floating blocks – anywhere from 0–15 min.</li>
+    <li><strong>Min focus</strong>the shortest focus session that Tully will save rather than discarding.</li>
+    <li><strong>Default duration for new blocks</strong>doesn’t apply to <a href="#timeblock-templates">templates</a>, which carry their own default duration.</li>
+    <li><strong>Splittable by default</strong>whether new timeblocks and templates default to being able to split around calendar events and pinned blocks. Can always be changed for any individual block.</li>
+    <li><strong>Open detail view when focus starts</strong>if toggled on, then every time you start focus on a block, the expanded sheet will automatically open, showing you your notes and linked reminders.</li>
+    <li><strong>Unfinished blocks</strong>can be set to leave them on the day they were scheduled, roll over or automatically delete when the day is over. This only applies to floating blocks.</li>
+  </ul>
+  <p>There is also a setting to configure the <strong>Today drawer</strong> (<a href="#day-overview">Day Overview</a>) to display or hide particular lists or tags. I use this to make sure my 50 overdue cleaning tasks don’t swamp my Day Overview.</p>
+
+  <h3 id="settings-templates">Templates &amp; Organization</h3>
+  <p>Create and edit Tags, Categories, Timeblock Templates and Day Templates.</p>
+  <p id="tags"><strong>Tags</strong> are useful for <a href="#matching-tasks">linking reminders in timeblocks</a> – a common use case is for ‘contexts’ where you can do a task (e.g. home, shops, phone).</p>
+  <p>Note: Tully tags are separate from tags you add in Apple Reminders (due to limitations in what developers can access – <a href="#limit-tags">see below</a>).</p>
+  <p id="categories"><strong>Categories</strong> are used for <a href="#history">History</a> and statistics, so you can see how your actual time is distributed between different areas. These could be areas of responsibility (work, home, family etc.) or any other categories you choose. Note that you assign timeblocks to categories within the History tab. Initially all your timeblocks will show as ‘Uncategorised’, and you can long-press to select a category. Once you’ve done this once, Tully learns which category a block with that name belongs to and will put all future blocks with the same name in that same category.</p>
+  <p><strong>Timeblock Templates</strong> can be used for blocks you regularly use. A template can contain things such as its default duration, colour and linked reminder filters. (See <a href="#timeblock-templates">Why use Timeblock Templates?</a>)</p>
+  <p><strong>Day Templates</strong> let you save a group of blocks and add them to a day together.</p>
+  <p>I use these as a starting point rather than a rigid schedule.</p>
+  <p>A Monday template might represent roughly how I would <em>like</em> Monday to look, but I can still quickly and easily add, delete or rearrange blocks however I like. (See <a href="#day-templates">Day Templates</a>.)</p>
+
+  <h3 id="settings-notifications">Notifications</h3>
+  <p>Tully’s notifications are configurable.</p>
+  <p>You can choose to be notified when:</p>
+  <ul>
+    <li>a pinned block is coming up</li>
+    <li>a Calendar event is coming up</li>
+    <li>you reach the end of your planned focus time</li>
+    <li>at regular intervals (every 5–15 min) when you’ve run overtime</li>
+  </ul>
+  <p>You can turn individual notification types on or off and configure when they appear.</p>
+
+  <h3 id="settings-data">Data &amp; Sync</h3>
+  <p>You can export your data at any time in JSON format, and choose to save this anywhere you like via the share menu.</p>
+  <p>You can also restore from a backup – however please take care as this will <strong>overwrite</strong> your existing data.</p>
+</section>
+
+<section id="widgets" data-c="widgets">
+  <h2>Widgets</h2>
+  <p>Tully includes widgets that let you see what’s happening without opening the app. Depending on the widget and what you’re currently doing, they can show things such as:</p>
+  <ul>
+    <li>the next blocks in your day</li>
+    <li>the block currently in focus</li>
+    <li>reminders linked to the current block</li>
+    <li>actions for the current focus session</li>
+  </ul>
+  <p>The idea is to make Tully useful without requiring you to constantly return to the full app.</p>
+</section>
+
+<section id="apple-reminders" data-c="reminders">
+  <h2>A few things to know about Apple Reminders</h2>
+  <p>Tully works directly with your existing Apple Reminders and Calendar data rather than importing everything into a separate task system. That means changes made to normal reminder properties stay in sync with Reminders.</p>
+  <p>There are, however, some limitations in Apple’s EventKit framework.</p>
+
+  <h3 id="limit-tags">Tags</h3>
+  <p>Tully tags are not the same as Apple Reminders tags. Apple doesn’t currently give third-party developers full access to Reminders tags through EventKit, so Tully has to maintain <a href="#tags">its own</a>.</p>
+
+  <h3 id="limit-urls">URLs</h3>
+  <p>For the same reason, Tully can’t read information stored in the URL field in Reminders. Tully therefore has its own URL field. Reminders with a Tully URL display a clickable link.</p>
+
+  <h3 id="limit-locations">Locations</h3>
+  <p>Tully can’t fully read and edit reminder locations either. If a reminder has a location attached, Tully shows a location pin so you know it’s there.</p>
+  <p>For any reminder, there is a link to directly open it in Apple Reminders if you need access to information Tully can’t display.</p>
+</section>
+
+<section id="roadmap" data-c="roadmap">
+  <h2>What I’m still working on</h2>
+  <p>Tully is still actively being developed, and I have far more ideas than I have time to build. Some things I’d particularly like to add are:</p>
+  <ul>
+    <li>a much better <a href="#review">daily planning</a> process</li>
+    <li>a proper <a href="#review">weekly review</a></li>
+    <li>a Mac app</li>
+    <li>an Apple Watch app</li>
+  </ul>
+  <p>There will undoubtedly be other things too.</p>
+  <p>Tully grew out of the system I wanted for myself, and I’m still using it every day and discovering ways to make that system work better.</p>
+</section>
+
+<footer>
+  <p>© 2026 Tully. All rights reserved.</p>
+</footer>
+</main>
+</div>
+
+<script>
+  (function () {
+    var toc = document.getElementById('toc');
+    var wide = window.matchMedia('(min-width: 861px)');
+    function syncOpen() { if (wide.matches) toc.open = true; }
+    syncOpen();
+    wide.addEventListener('change', syncOpen);
+
+    toc.addEventListener('click', function (e) {
+      if (e.target.closest('a') && !wide.matches) toc.open = false;
+    });
+
+    var secLinks = {};
+    document.querySelectorAll('.rail li.sec').forEach(function (li) {
+      var id = li.querySelector('a').getAttribute('href').slice(1);
+      secLinks[id] = li;
+    });
+    var subLinks = {};
+    document.querySelectorAll('.rail li.sec li a').forEach(function (a) {
+      subLinks[a.getAttribute('href').slice(1)] = a;
+    });
+
+    if (!('IntersectionObserver' in window)) return;
+
+    var sectionObserver = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (entry.isIntersecting) {
+          Object.values(secLinks).forEach(function (li) { li.classList.remove('active'); });
+          var li = secLinks[entry.target.id];
+          if (li) li.classList.add('active');
+        }
+      });
+    }, { rootMargin: '-35% 0px -60% 0px' });
+    document.querySelectorAll('main section').forEach(function (s) { sectionObserver.observe(s); });
+
+    var headingObserver = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (entry.isIntersecting) {
+          Object.values(subLinks).forEach(function (a) { a.classList.remove('active'); });
+          var a = subLinks[entry.target.id];
+          if (a) a.classList.add('active');
+        }
+      });
+    }, { rootMargin: '-20% 0px -70% 0px' });
+    document.querySelectorAll('main h3[id]').forEach(function (h) {
+      if (subLinks[h.id]) headingObserver.observe(h);
+    });
+  })();
+</script>
+</body>
+</html>
