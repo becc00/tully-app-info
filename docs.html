@@ -213,6 +213,30 @@
     font-size: 0.875rem;
     color: var(--muted);
   }
+    .site-header { border-bottom: 1px solid var(--rule); font-family: var(--sans); }
+  .site-header .wrap {
+    max-width: 72rem;
+    margin: 0 auto;
+    padding: 1.1rem 2rem;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 0.5rem 1.5rem;
+  }
+  .wordmark { font-weight: 700; font-size: 1.25rem; letter-spacing: -0.02em; color: var(--ink); text-decoration: none; }
+  .site-header nav, footer nav { display: flex; gap: 1.25rem; }
+  .site-header nav a { color: var(--muted); text-decoration: none; font-weight: 500; font-size: 0.95rem; }
+  .site-header nav a:hover { color: var(--accent); }
+  .site-header nav a[aria-current="page"] {
+    color: var(--ink);
+    text-decoration: underline;
+    text-decoration-color: var(--accent);
+    text-decoration-thickness: 2px;
+    text-underline-offset: 0.35em;
+  }
+  footer nav { margin-bottom: 0.5rem; }
+  @media (max-width: 860px) { .site-header .wrap { padding: 1rem 1.25rem; } }
 
   [data-c="intro"] { --c: var(--c-intro); }
   [data-c="time"] { --c: var(--c-time); }
@@ -250,6 +274,16 @@
 </style>
 </head>
 <body>
+<header class="site-header">
+  <div class="wrap">
+    <a class="wordmark" href="docs.html">Tully</a>
+    <nav aria-label="Site">
+      <a href="docs.html" aria-current="page">Documentation</a>
+      <a href="support.html">Support</a>
+      <a href="privacy.html">Privacy</a>
+    </nav>
+  </div>
+</header>
 <div class="layout">
 
 <nav class="rail" aria-label="Contents">
@@ -557,6 +591,10 @@
 </section>
 
 <footer>
+  <nav aria-label="Footer">
+    <a href="support.html">Support</a>
+    <a href="privacy.html">Privacy Policy</a>
+  </nav>
   <p>© 2026 Tully. All rights reserved.</p>
 </footer>
 </main>
