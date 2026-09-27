@@ -346,8 +346,8 @@
 <section id="why" data-c="intro">
   <h2>Why I built Tully</h2>
   <p>I built Tully because I was struggling to juggle too many things and never seemed to have enough time for everything I wanted or needed to do. Every time I looked at my long and ever-expanding task list I felt completely overwhelmed and didn’t know where to start. And even when I knew what I had to get done, I had trouble figuring out how to fit it all into my day.</p>
-  <p>Like a lot of people in that situation, I’d tried many different apps. I liked using Apple Reminders and Calendar because they’re native and really well integrated into the Apple ecosystem. But I always found that while Reminders makes it really easy to add more and more tasks, it was less helpful when it came to organising them or deciding what to do when.</p>
-  <p>I’d also tried time blocking in my calendar, but I really disliked mixing actual commitments, like meetings and appointments, with things I was merely planning or hoping to do. And because I was terrible at estimating how long things would take, those plans rarely survived contact with reality.</p>
+  <p>Like a lot of people in that situation, I’d tried many different apps. I liked using Apple Reminders and Calendar because they’re native and really well integrated into the Apple ecosystem. But I always found Reminders better at letting me add tasks than at helping me organise them or decide what to do when.</p>
+  <p>I’d also tried time blocking in my calendar, but I really disliked mixing actual commitments, like meetings and appointments, with things I was merely planning or hoping to do. And because things constantly change, those plans rarely survived contact with reality.</p>
   <p>What I really wanted was a way to decide at a higher level how much time I wanted to spend on different parts of my life, and then have a flexible daily plan that was easy to change whenever it needed to.</p>
   <p>Instead of looking at a list of 50 cleaning tasks and feeling guilty for never getting to them (I hate cleaning), I wanted to be able to say:</p>
   <p class="aside-line">I’ll spend an hour on cleaning.</p>
@@ -360,22 +360,22 @@
   <p>Tully lets you create time blocks for your day. A block can be <strong>pinned</strong>, meaning it happens at a particular time, or <strong>floating</strong>, meaning it can move later if other things take longer or something changes.</p>
   <p>Floating blocks can also have a <strong>Not Before</strong> time. This means the block won’t start before that time, and any later floating blocks will move with it.</p>
   <p>One thing I deliberately did <em>not</em> want was an AI scheduler or an app that decides what you should do next.</p>
-  <p>Tully doesn’t rearrange the order of your blocks or try to optimise your day for you. You create the plan. You can make that process faster by creating templates for individual blocks, or even whole days, but the basic idea remains the same: you decide how you want to spend your time.</p>
-  <p>Tully then does the mechanical bit.</p>
-  <p>It lays your blocks out around your Calendar events and keeps adjusting their timing as the day changes. If something takes longer than expected, or another calendar event appears, later floating blocks move back.</p>
-  <p id="overflow">If everything you planned no longer fits into the day, the blocks at the bottom move into <strong>Overflow</strong>. This makes an unrealistic day very obvious. Instead of quietly pretending I can do 14 hours of things in eight hours, I can see that something has to give and decide consciously what to remove.</p>
+  <p>Tully doesn’t rearrange the order of your blocks or try to optimise your day for you. <em>You</em> create the plan. Tully tries to make it as easy as possible by suggesting blocks you've used before and letting you create templates for individual blocks, or even whole days, but <em>you</em> decide how you want to spend your time.</p>
+  <p>Tully then looks after the mechanics.</p>
+  <p>It lays your blocks out around your Calendar events and keeps adjusting their timing as the day changes. If something takes longer than expected, or another calendar event appears, later floating blocks get pushed back.</p>
+  <p id="overflow">If everything you planned no longer fits into the day, the blocks at the bottom move into <strong>Overflow</strong>. This makes an unrealistic day very obvious. Instead of quietly pretending you can do 14 hours of things in eight hours, you can see that something has to give and decide consciously what to remove.</p>
 </section>
 
 <section id="today" data-c="today">
   <h2>Today tab</h2>
-  <p>The Today tab is for your daily plan. You can view the day either as a <strong>Timeline</strong> or as a <strong>List</strong> (tap the three dots at the top right). You can also tap the calendar icon to jump to any date, swipe between days, or pick a date from the date bar.</p>
+  <p>The Today tab is the home for your daily plan. You can view the day either as a <strong>Timeline</strong> or as a <strong>List</strong> (tap the three dots at the top right). You can also tap the calendar icon to jump to any date, swipe between days, or pick a date from the date bar.</p>
 
   <h3 id="calendars-events">Calendars and events</h3>
-  <p>You can hide entire calendars or individual events if you don’t want them taking up space in your day or affecting where your time blocks fit. Hidden events won’t block out time in Tully, but they remain unchanged in Apple Calendar. (You choose which calendars appear under <a href="#settings-integrations">Settings › Integrations</a>.)</p>
-  <p>All-day calendar events aren’t shown in Tully, since they generally don’t represent a specific period of time that needs to be blocked out. In future I may add them to the <a href="#day-overview">Day Overview</a> as alerts.</p>
+  <p>You can hide entire calendars via <a href="#settings-integrations">Settings › Integrations</a> or long-press to hide individual events if you don’t want them taking up space in your day or affecting where your time blocks fit. Hidden events won’t block out time in Tully, but they remain unchanged in Apple Calendar.</p>
+  <p>All-day calendar events aren’t shown in Tully, since they generally don’t represent specific events that need to block your timeline. In future I may add them to the <a href="#day-overview">Day Overview</a> as alerts.</p>
 
   <h3 id="time-blocks">Time blocks</h3>
-  <p>You can create blocks directly or from saved block templates.</p>
+  <p>You can add blocks to any date using the + on the bottom right.</p>
   <p>Blocks can be:</p>
   <ul>
     <li><a href="#how-time-works">pinned</a> to a particular time</li>
@@ -385,45 +385,46 @@
     <li>assigned to a <a href="#settings-templates">category</a></li>
     <li>created from <a href="#timeblock-templates">templates</a></li>
   </ul>
+  <p>You can drag and drop blocks to change their order.</p>
 
   <h4 id="title-suggestions">Title suggestions</h4>
   <p>When you start typing the title of a new time block, Tully suggests matching titles from your templates and previous blocks, so you can quickly reuse a block without re-creating it from scratch.</p>
 
   <h4 id="timeblock-templates">Why use Timeblock Templates?</h4>
-  <p>With <a href="#title-suggestions">title suggestions</a>, you don’t necessarily need to create templates for every type of block you want to re-use. They’re still useful for certain types of blocks though. Templates appear at the top of the suggestions, and you can save additional information such as notes that will be copied into each new block. If you create a block from a previous block instead, its notes won’t be copied. (Templates are created and edited in <a href="#settings-templates">Settings › Templates &amp; Organization</a>.)</p>
+  <p>Templates are useful because they appear at the top of the suggestions, and you can save additional information such as notes that will be copied into each new block. If you create a block from a previous block instead, its notes won’t be copied. (Templates are created and edited in <a href="#settings-templates">Settings › Templates &amp; Organization</a>.)</p>
 
   <h4 id="notes-checklists">Timeblock notes &amp; checklists</h4>
   <p>Timeblocks can have notes, including Markdown checkboxes. There’s a button just above the keyboard to insert a checkbox, and you can tick items off directly from the expanded time block sheet without having to open the notes editor.</p>
 
   <h4 id="day-templates">Day Templates</h4>
   <p>You can also create Day Templates if you often use the same broad structure (e.g. work-at-home days versus office days, or Mondays versus Tuesdays).</p>
-  <p>The point of templates is not to create a rigid recurring schedule. They’re simply a quick starting point for today’s plan.</p>
+  <p>The point of templates is not to create a rigid recurring schedule. They’re simply a quick starting point for your day's plan.</p>
   <p>When you apply a Day Template, you can choose to add its blocks to your existing plan or replace the timeblocks already there. Either way, your calendar events are left untouched.</p>
 
   <h3 id="focusing">Focusing on a block</h3>
-  <p>When you start Focus on a block, Tully keeps that block active until <em>you</em> decide you’re finished.</p>
-  <p>It doesn’t simply stop when the estimated duration expires.</p>
+  <p>When you start Focus on a block, Tully keeps that block active until <em>you</em> decide you’re finished. It doesn’t simply stop when the estimated duration expires.</p>
   <p>If something takes longer than you expected, the block can continue into overtime and the floating blocks after it will move later. (You can ask to be <a href="#settings-notifications">notified</a> when you reach the end of your planned time, and at regular intervals while you’re in overtime.)</p>
-  <p>If you’re interrupted, or you decide you want to come back to the work later, long-press the block to choose <strong>Continue Later</strong> rather than Complete, which tells Tully to create another block.</p>
+  <p>If you’re interrupted, or you decide you need more time later, long-press the block to choose <strong>Continue Later</strong> rather than Complete. This tells Tully to create another block.</p>
   <p>If you stopped before the planned end of the original block, the new block uses the remaining planned time. If you had already gone past the planned end, it uses a default duration instead (set in <a href="#settings-schedule">Settings</a>).</p>
-  <p>You can change the duration of a block at any time by long-pressing it and choosing <strong>Duration</strong>. You can also choose <strong>Scheduling</strong> to switch between a floating, pinned or Not Before block, or <strong>Tomorrow</strong> to postpone it.</p>
+  <p>You can change the duration of a block at any time by long-pressing it and choosing <strong>Edit duration</strong>. You can also choose <strong>Scheduling</strong> to switch between a floating, pinned or Not Before block, or <strong>Tomorrow</strong> to postpone it.</p>
 
   <h3 id="matching-tasks">Seeing only the tasks that matter now</h3>
-  <p>The other major idea behind Tully is being able to look at one subset of your tasks at a time.</p>
-  <p>A time block – or a time block template – can be linked to a:</p>
+  <p>Another key feature of Tully is that it lets you see only one subset of your tasks at a time.</p>
+  <p>A time block – or a time block template – can be linked to combinations of:</p>
   <ul>
-    <li>Reminders list</li>
-    <li><a href="#projects">project</a></li>
-    <li><a href="#limit-tags">tag</a></li>
-    <li>specific reminder</li>
+    <li>Reminders lists</li>
+    <li><a href="#projects">projects</a></li>
+    <li><a href="#limit-tags">tags</a></li>
   </ul>
+<p>or a specific reminder.</p>
+
   <p>When you tap to open the block, Tully only shows available reminders matching those criteria.</p>
   <p>The current matching rule is deliberately quite simple:</p>
-  <p class="rule">selected list AND selected tag, plus tasks from any selected project.</p>
+  <p class="rule">selected list(s) AND selected tag(s), plus tasks from any selected project.</p>
   <p>For example, you might have a block called <strong>Phone calls</strong> linked to the tag <em>calls</em>, with no list selected. That block would show available reminders tagged <em>calls</em>, regardless of which list they belong to.</p>
   <p>I may make this more configurable in future, but I didn’t want version 1 to require people to build complicated AND/OR search rules before they could get anything done.</p>
-  <p>You can also manually add a particular reminder to a block. That reminder will then appear in that block even if it wouldn’t normally match its list, project or tag filters.</p>
-  <p>Or you can create a dedicated block for a reminder, using the reminder’s name as the block name.</p>
+  <p>You can also long-press a reminder and choose <strong>Add to block</strong> to manually add it to one of your blocks. That reminder will then appear in that block even if it wouldn’t normally match its list, project or tag filters.</p>
+  <p>Or you can long-press to <strong>Create block</strong>, which makes a dedicated block for that reminder, with the same name.</p>
 
   <h3 id="day-overview">Day Overview</h3>
   <p>On the Today tab, you can swipe up to open the Day Overview drawer. Apart from some summary statistics, it shows you reminders that aren’t linked to any block, which reminders fall in each of your planned blocks, and upcoming <a href="#start-dates">deadlines</a>.</p>
@@ -434,15 +435,15 @@
 
 <section id="todo" data-c="todo">
   <h2>To Do tab</h2>
-  <p>The To Do tab is Tully’s view of your Apple Reminders, with some additional organisation that Reminders itself doesn’t provide.</p>
+  <p>The To Do tab is Tully’s view of your Apple Reminders, with some additional features that Reminders itself doesn’t offer.</p>
 
   <h3 id="start-dates">Start dates and deadlines</h3>
   <p>Tully treats the date on an Apple Reminder as a <strong>start date</strong> or <strong>planned date</strong> rather than a deadline. Separately, you can give a reminder a Tully <strong>deadline</strong>.</p>
-  <p>That distinction matters to me. Something can become available to work on Monday but not actually be due until Friday. I don’t want to pretend those are the same thing.</p>
+  <p>Not everyone cares about the distinction (and deadlines are entirely optional. But if something can be done anytime this week and is due Friday, you can set a separate start date and deadline. This also means that tasks which have no real deadline (like cleaning the oven) will not show up in red as 'overdue'. Ever.</p>
 
   <h3 id="snooze">Snooze</h3>
   <p>You can snooze a reminder in Tully. This does <strong>not</strong> change its date in Apple Reminders. It simply hides it from your current view until the snooze period ends.</p>
-  <p>I find this especially useful for recurring reminders. Sometimes a recurring task becomes due but I know I can’t get to it for a few days. Changing its Reminders date can interfere with the recurrence pattern, whereas Snooze lets me temporarily get it out of the way without changing the underlying reminder.</p>
+  <p>I find this especially useful for recurring reminders. Sometimes a recurring task becomes due but I know I can’t get to it for a few days. Changing its Reminders date can mess up the recurrence pattern, whereas Snooze lets me temporarily get it out of the way without changing the underlying reminder.</p>
 
   <h3 id="someday">Someday / Maybe</h3>
   <p>You can also mark a reminder <strong>Someday / Maybe</strong>. These reminders are removed from your normal working views and won’t appear inside time blocks. The idea is to have somewhere to keep things you might want to do without having them constantly competing for your attention.</p>
@@ -450,7 +451,7 @@
 
   <h3 id="projects">Projects</h3>
   <p>Any reminder can be turned into a Tully <strong>Project</strong>. Other reminders can then be linked to it as child tasks.</p>
-  <p>Projects behave much like other reminders: they can have start dates, deadlines, priority and recurrence. Tully also gives you a dedicated Projects view so you can see them together.</p>
+  <p>Projects behave much like other reminders: they can have start dates, deadlines, priority and recurrence. Tully also gives you a dedicated Projects view so you can see all of them together.</p>
 
   <h3 id="quick-edit">Quickly editing reminders</h3>
   <p>Long-press a reminder to quickly change things such as:</p>
@@ -461,7 +462,7 @@
     <li><a href="#start-dates">start date</a></li>
     <li><a href="#start-dates">deadline</a></li>
   </ul>
-  <p>You can always open the reminder in Apple Reminders as well.</p>
+  <p>You can always tap to open and see all details, including a link to open directly in Apple Reminders.</p>
 
   <h3 id="repeat-after-completion">Repeat after completion</h3>
   <p>Tully supports <strong>Repeat After Completion</strong>.</p>
@@ -470,9 +471,8 @@
 
   <h3 id="log-completion">Logging a past completion time</h3>
   <p>Normally, completing a reminder simply records the current date and time.</p>
-  <p>But if you want to record when something was <em>actually</em> completed, long-press the reminder and choose <strong>Log Completion</strong>. You can then choose the completion date and time yourself.</p>
+  <p>But if you forgot to mark something complete earlier today, or another day, you can long-press the reminder and choose <strong>Log Completion</strong>. You can then choose the completion date and time yourself.</p>
   <p>This is completely optional, but I find it useful for things where I may later need to know exactly when I did it.</p>
-  <p>Tully also shows completion dates and times for completed reminders.</p>
 
   <h3 id="list-colours">Custom list colours</h3>
   <p>Tully lets you choose custom colours for your Reminders lists, rather than being limited to Apple’s preset colours. The custom colours also appear in Apple Reminders, so your lists look the same in both apps.</p>
@@ -487,10 +487,10 @@
     <li><a href="#someday">Someday / Maybe</a> reminders</li>
     <li>Untagged reminders</li>
   </ul>
-  <p>It also shows you – in the Timeblocks section – which reminders match each of your saved <a href="#timeblock-templates">templates</a> and which match no template. This can give you a rough idea of which timeblocks you might need to schedule more often!</p>
+  <p>It also shows you – in the Timeblocks section – which reminders match each of your saved <a href="#timeblock-templates">templates</a> and which don't match any template. This can give you a rough idea of which timeblocks you might need to schedule more often!</p>
   <p>Review is one of the areas I most want to develop further.</p>
   <p>I’d like Tully eventually to support a much better review process, including a short <strong>daily planning</strong> process and a more structured <strong>weekly review</strong>.</p>
-  <p>The goal isn’t to add more productivity process for the sake of it. It’s to create a useful way to look at what is actually on your plate before automatically filling the day or week with the same things you always do.</p>
+  <p>The goal isn’t to add more productivity work for the sake of it. It’s to create a useful way to look at what is actually on your plate before automatically filling the day or week with the same things you always do.</p>
 </section>
 
 <section id="history" data-c="history">
@@ -498,28 +498,28 @@
   <p>Tully keeps a history of your completed <a href="#focusing">focus sessions</a>.</p>
   <p>If you assign time blocks to <a href="#categories"><strong>categories</strong></a>, you can see how much time you have actually spent on those categories over days, weeks and months.</p>
   <p>There is also a heat-map view showing when you have spent time on them.</p>
-  <p>I’ve found this surprisingly useful for planning. For example, I used to routinely give myself half an hour to cook dinner. Looking at my actual history made it very obvious that dinner usually takes me more than an hour.</p>
+  <p>I’ve found this can be useful for planning. Say for example that I've always assumed I need half an hour to cook dinner. But then looking at my actual history makes it clear that dinner usually takes me more than an hour.</p>
   <p>That kind of information is useful because better planning isn’t necessarily about squeezing more into a day. Sometimes it just means becoming more realistic about how long your life actually takes.</p>
-  <p>If you’re a data nerd, Tully lets you do detailed time tracking. It’s completely up to you how you set up your categories and timeblocks to record what matters to you. For example, maybe you don’t care about knowing how long it takes you to ‘Cook dinner’, only how long you spend on home chores generally.</p>
-  <p>If you don’t care about history or time tracking, all this is optional. If all you ever do is plan a few key blocks, do the tasks in each block and move on, that’s entirely your prerogative. Sometimes time tracking is a trap anyway.</p>
+  <p>If you’re a data nerd, Tully lets you track your time in as much detail as you like. How you set up your categories and timeblocks is entirely up to you. For example, you might want to track exactly how long you spend cooking dinner, or you might only be interested in how much time you spend on household chores overall.</p>
+  <p>On the other hand, if you're not interested in time tracking, you can ignore it entirely. You can simply plan a few key blocks, work through the tasks in each one and get on with your day. Sometimes time tracking is a trap anyway.</p>
 </section>
 
 <section id="settings" data-c="settings">
   <h2>Settings tab</h2>
-  <p>Settings is where you can configure how you want Tully to work and create and manage the reusable parts.</p>
+  <p>Settings is where you can configure how you want Tully to work, as well as create and manage the reusable parts.</p>
 
   <h3 id="settings-integrations">Integrations</h3>
   <p>Choose which calendars and Reminders lists to display in Tully. You can also (optionally) select a list to use as your Inbox, which then appears in the <a href="#review">Review tab</a>.</p>
 
   <h3 id="settings-schedule">Schedule &amp; Timeblocks</h3>
   <ul class="settings-list">
-    <li><strong>Start and end of day</strong>the hours between which you want Tully to schedule your blocks. Floating blocks will never start before the ‘start’ time (unless you pin them earlier), and anything that won’t fit before the ‘end’ time will move into the <a href="#overflow">Overflow</a> section.</li>
-    <li><strong>Buffer between blocks</strong>how much time you want Tully to add between floating blocks – anywhere from 0–15 min.</li>
-    <li><strong>Min focus</strong>the shortest focus session that Tully will save rather than discarding.</li>
-    <li><strong>Default duration for new blocks</strong>doesn’t apply to <a href="#timeblock-templates">templates</a>, which carry their own default duration.</li>
-    <li><strong>Splittable by default</strong>whether new timeblocks and templates default to being able to split around calendar events and pinned blocks. Can always be changed for any individual block.</li>
-    <li><strong>Open detail view when focus starts</strong>if toggled on, then every time you start focus on a block, the expanded sheet will automatically open, showing you your notes and linked reminders.</li>
-    <li><strong>Unfinished blocks</strong>can be set to leave them on the day they were scheduled, roll over or automatically delete when the day is over. This only applies to floating blocks.</li>
+    <li><strong>Start and end of day</strong>The hours between which you want Tully to schedule your blocks. Floating blocks will never start before the ‘start’ time (unless you pin them earlier), and anything that won’t fit before the ‘end’ time will move into the <a href="#overflow">Overflow</a> section.</li>
+    <li><strong>Buffer between blocks</strong>How much time you want Tully to add between floating blocks – anywhere from 0–15 min.</li>
+    <li><strong>Min focus</strong>The shortest focus session that Tully will save rather than discarding.</li>
+    <li><strong>Default duration for new blocks</strong>Doesn’t apply to <a href="#timeblock-templates">templates</a>, which carry their own default duration.</li>
+    <li><strong>Splittable by default</strong>Whether new timeblocks and templates default to being able to split around calendar events and pinned blocks. Can always be changed for any individual block.</li>
+    <li><strong>Open detail view when focus starts</strong>If toggled on, then every time you start focus on a block, the expanded sheet will automatically open, showing you your notes and linked reminders.</li>
+    <li><strong>Unfinished blocks</strong>Can be set to leave them on the day they were scheduled, roll over or automatically delete when the day is over. This only applies to floating blocks.</li>
   </ul>
   <p>There is also a setting to configure the <strong>Today drawer</strong> (<a href="#day-overview">Day Overview</a>) to display or hide particular lists or tags. I use this to make sure my 50 overdue cleaning tasks don’t swamp my Day Overview.</p>
 
@@ -558,7 +558,7 @@
     <li>reminders linked to the current block</li>
     <li>actions for the current focus session</li>
   </ul>
-  <p>The idea is to make Tully useful without requiring you to constantly return to the full app.</p>
+  <p>The idea is to make Tully useful without requiring you to constantly open the app.</p>
 </section>
 
 <section id="apple-reminders" data-c="reminders">
@@ -588,6 +588,7 @@
   </ul>
   <p>As well as countless improvements throughout the app.</p>
   <p>Tully grew out of the system I wanted for myself, and I’m still using it every day and working out ways to make that system better.</p>
+  <p>If you have feedback or suggestions, I would love to hear from you.</p>
 </section>
 
 <footer>
